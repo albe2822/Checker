@@ -2,9 +2,8 @@ import requests
 from bs4 import BeautifulSoup
 import os
 from datetime import datetime
+from zoneinfo import ZoneInfo
 import time
-from datetime import datetime
-from zoneinfo import ZoneInfo 
 
 TELEGRAM_TOKEN = "8026059054:AAEL39Lnezjgsi_mmrrBst7C6DNMMAjH3Ic"
 TELEGRAM_CHAT_ID = "5001230025"
@@ -38,7 +37,7 @@ def save_products(products):
 def save_check_time():
     tz = ZoneInfo("Europe/Copenhagen")
     now = datetime.now(tz)
-    formatted_time = now.strftime("%H:%M")  # fx "14:30"
+    formatted_time = now.strftime("%d %H:%M")  # fx "11 14:30"
     with open(CHECKED_FILE, "w", encoding="utf-8") as f:
         f.write(formatted_time)
 
@@ -69,10 +68,13 @@ def check_for_products():
 def get_updates(offset=None):
     url = f"{API_URL}/getUpdates"
     params = {"timeout": 100, "offset": offset}
-    response = requests.get(url, params=params)
-    if response.status_code == 200:
+    try:
+        response = requests.get(url, params=params, timeout=120)
+        response.raise_for_status()
         return response.json()
-    return None
+    except Exception as e:
+        print("Fejl ved hentning af opdateringer:", e)
+        return None
 
 def handle_updates():
     last_update_id = None
@@ -89,7 +91,7 @@ def handle_updates():
 
                 if text == "/lc":
                     if os.path.exists(CHECKED_FILE):
-                        with open(CHECKED_FILE, "r") as f:
+                        with open(CHECKED_FILE, "r", encoding="utf-8") as f:
                             last_check = f.read().strip()
                         send_telegram(f"Seneste tjek var: {last_check}", chat_id=chat_id)
                     else:
