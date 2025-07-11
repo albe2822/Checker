@@ -2,37 +2,23 @@ name: Blackfire Monitor
 
 on:
   schedule:
-    - cron: '*/5 * * * *'    # Hver 5. minut
-  workflow_dispatch:         # Manuelt startbar
+    - cron: '*/5 * * * *'  # hvert 5. minut
+  workflow_dispatch:       # gør det muligt at køre manuelt
 
 jobs:
-  check-products:
+  run-script:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v3
+      - name: Tjek repo ud
+        uses: actions/checkout@v3
 
-      - name: Setup Python
+      - name: Sæt Python op
         uses: actions/setup-python@v4
         with:
-          python-version: '3.x'
+          python-version: '3.11'
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install requests beautifulsoup4
+      - name: Installer afhængigheder
+        run: pip install requests beautifulsoup4
 
-      - name: Send startup message via Telegram
-        env:
-          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: |
-          curl -s -X POST https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage \
-          -d chat_id=$TELEGRAM_CHAT_ID \
-          -d text="🛰️ GitHub workflow startet – overvåger Blackfire..."
-
-      - name: Run monitor script
-        env:
-          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      - name: Kør script
         run: python blackfire_monitor.py
