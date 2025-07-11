@@ -95,7 +95,7 @@ def handle_updates():
                     else:
                         send_telegram("Ingen oplysninger om sidste tjek endnu.", chat_id=chat_id)
                 else:
-                    send_telegram("Ukendt kommando. Prøv /lc", chat_id=chat_id)
+                    send_telegram("Ukendt kommando: Prøv /lc", chat_id=chat_id)
         time.sleep(1)
 
 if __name__ == "__main__":
