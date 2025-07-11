@@ -56,10 +56,12 @@ def check_for_products():
     last_products = load_last_products()
     new_products = current_products - last_products
 
+    # Overskriv filen med kun de aktuelle produkter
+    save_products(current_products)
+
     if new_products:
         message = "🆕 Nye produkter fundet:\n\n" + "\n".join(f"• {p}" for p in new_products)
         send_telegram(message)
-        save_products(current_products)
     else:
         print("Ingen nye produkter.")
 
