@@ -38,7 +38,7 @@ def save_products(products):
 def save_check_time():
     tz = ZoneInfo("Europe/Copenhagen")
     now = datetime.now(tz)
-    formatted_time = now.strftime("%d %H:%M")  # fx "11 14:30"
+    formatted_time = now.strftime("%H:%M")  # fx "14:30"
     with open(CHECKED_FILE, "w", encoding="utf-8") as f:
         f.write(formatted_time)
 
