@@ -106,8 +106,5 @@ if __name__ == "__main__":
     # Send start-besked
     send_telegram("🛰️ Overvågning startet – tjekker Blackfire...")
 
-    # Første tjek af produkter
+    # Tjek produkter én gang
     check_for_products()
-
-    # Start lytning efter Telegram-kommandoer
-    handle_updates()
