@@ -3,6 +3,8 @@ from bs4 import BeautifulSoup
 import os
 from datetime import datetime
 import time
+from datetime import datetime
+from zoneinfo import ZoneInfo 
 
 TELEGRAM_TOKEN = "8026059054:AAEL39Lnezjgsi_mmrrBst7C6DNMMAjH3Ic"
 TELEGRAM_CHAT_ID = "5001230025"
@@ -34,9 +36,11 @@ def save_products(products):
             f.write(product + "\n")
 
 def save_check_time():
-    now = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
+    tz = ZoneInfo("Europe/Copenhagen")
+    now = datetime.now(tz)
+    formatted_time = now.strftime("%d %H:%M")  # fx "11 14:30"
     with open(CHECKED_FILE, "w", encoding="utf-8") as f:
-        f.write(now)
+        f.write(formatted_time)
 
 def check_for_products():
     try:
@@ -83,7 +87,7 @@ def handle_updates():
                 chat_id = message["chat"]["id"]
                 text = message.get("text", "")
 
-                if text == "/lastcheck":
+                if text == "/lc":
                     if os.path.exists(CHECKED_FILE):
                         with open(CHECKED_FILE, "r") as f:
                             last_check = f.read().strip()
@@ -91,7 +95,7 @@ def handle_updates():
                     else:
                         send_telegram("Ingen oplysninger om sidste tjek endnu.", chat_id=chat_id)
                 else:
-                    send_telegram("Ukendt kommando. Prøv /lastcheck", chat_id=chat_id)
+                    send_telegram("Ukendt kommando. Prøv /lc", chat_id=chat_id)
         time.sleep(1)
 
 if __name__ == "__main__":
