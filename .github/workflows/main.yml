@@ -1,19 +1,24 @@
-name: Test Cron Every 5 Minutes
+name: Blackfire Monitor
 
 on:
   schedule:
     - cron: '*/5 * * * *'  # hvert 5. minut
-  workflow_dispatch:
+  workflow_dispatch:       # gør det muligt at køre manuelt
 
 jobs:
-  test-run:
+  run-script:
     runs-on: ubuntu-latest
     steps:
-      - name: Check ud repo
+      - name: Tjek repo ud
         uses: actions/checkout@v3
 
-      - name: Tjek Python version
-        run: python --version
+      - name: Sæt Python op
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
 
-      - name: Echo test
-        run: echo "Workflow kører - $(date -u)"
+      - name: Installer afhængigheder
+        run: pip install requests beautifulsoup4
+
+      - name: Kør script
+        run: python blackfire_monitor.py
