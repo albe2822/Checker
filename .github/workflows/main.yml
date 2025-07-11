@@ -2,12 +2,13 @@ name: Blackfire Monitor
 
 on:
   schedule:
-    - cron: '0 * * * *'    # Kører hvert hele time
-  workflow_dispatch:      # Mulighed for manuel kørsel
+    - cron: '*/5 * * * *'    # Kører hvert 5. minut
+  workflow_dispatch:         # Mulighed for manuel kørsel
 
 jobs:
   check-products:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
 
