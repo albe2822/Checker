@@ -7,7 +7,7 @@ import time
 
 TELEGRAM_TOKEN = "8026059054:AAEL39Lnezjgsi_mmrrBst7C6DNMMAjH3Ic"
 TELEGRAM_CHAT_ID = "5001230025"
-URL = "https://en.blackfire.cz/pokemon-company/pokemon-tcg?p=Products&cid=2024934&sort=newest&instock=0&p12=Pok%C3%A9mon+Company&p13=POK%C3%89MON"
+URL = "https://b2b.blackfire.cz/pokemon-company?p=Products&p12=Pok%C3%A9mon+Company"
 DATA_FILE = "last_products.txt"
 CHECKED_FILE = "last_checked.txt"
 API_URL = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}"
