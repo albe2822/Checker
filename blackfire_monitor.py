@@ -103,8 +103,5 @@ def handle_updates():
         time.sleep(1)
 
 if __name__ == "__main__":
-    # Send start-besked
-    send_telegram("🛰️ Overvågning startet – tjekker Blackfire...")
-
     # Tjek produkter én gang
     check_for_products()
